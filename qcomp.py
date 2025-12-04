@@ -16,46 +16,70 @@ class HGate(Gate):
     def __init__(self, n_targets = 1):
         H = 1/np.sqrt(2) * np.array([[1, 1], 
                                      [1,-1]], dtype = np.float32)
-        matrix = H
+        matrix = H.copy()
         if n_targets > 1:
             for _ in range(1, n_targets):
                 matrix = np.kron(matrix, H)
         super().__init__("H", matrix, n_qbits = n_targets)
 
 class XGate(Gate):
-    def __init__(self):
-        matrix = np.array([[0, 1], 
-                           [1, 0]], dtype = np.float32)
-        super().__init__("X", matrix, n_qbits = 1)
+    def __init__(self, n_targets = 1):
+        X = np.array([[0, 1], 
+                      [1, 0]], dtype = np.float32)
+        matrix = X.copy()
+        if n_targets > 1:
+            for _ in range(1, n_targets):
+                matrix = np.kron(matrix, X)
+        super().__init__("X", matrix, n_qbits = n_targets)
 
 class YGate(Gate):
-    def __init__(self):
-        matrix = np.array([[0,-1j], 
-                           [1j, 0]], dtype = np.float32)
-        super().__init__("Y", matrix, n_qbits = 1)
+    def __init__(self, n_targets = 1):
+        Y = np.array([[0, -1j], 
+                      [1j, 0]], dtype = np.complex64)
+        matrix = Y.copy()
+        if n_targets > 1:
+            for _ in range(1, n_targets):
+                matrix = np.kron(matrix, Y)
+        super().__init__("Y", matrix, n_qbits = n_targets)
 
 class ZGate(Gate):
-    def __init__(self):
-        matrix = np.array([[1, 0], 
-                           [0,-1]], dtype = np.float32)
-        super().__init__("Z", matrix, n_qbits = 1)
+    def __init__(self, n_targets = 1):
+        Z = np.array([[1, 0], 
+                      [0, -1]], dtype = np.float32)
+        matrix = Z.copy()
+        if n_targets > 1:
+            for _ in range(1, n_targets):
+                matrix = np.kron(matrix, Z)
+        super().__init__("Z", matrix, n_qbits = n_targets)
 
 class RXGate(Gate):
-    def __init__(self, theta):
-        matrix = np.array([[np.cos(theta/2), -1j*np.sin(theta/2)], 
-                           [-1j*np.sin(theta/2), np.cos(theta/2)]], dtype = np.float32)
+    def __init__(self, theta, n_targets = 1):
+        RX = np.array([[np.cos(theta/2), -1j*np.sin(theta/2)], 
+                       [-1j*np.sin(theta/2), np.cos(theta/2)]], dtype = np.complex64)
+        matrix = RX.copy()
+        if n_targets > 1:
+            for _ in range(1, n_targets):
+                matrix = np.kron(matrix, RX)
         super().__init__(f"RX({np.round(theta/np.pi,2)}π)", matrix, n_qbits = 1)
 
 class RYGate(Gate):
-    def __init__(self, theta):
-        matrix = np.array([[np.cos(theta/2),-np.sin(theta/2)], 
-                           [np.sin(theta/2), np.cos(theta/2)]], dtype = np.float32)
+    def __init__(self, theta, n_targets = 1):
+        RY = np.array([[np.cos(theta/2),-np.sin(theta/2)], 
+                       [np.sin(theta/2), np.cos(theta/2)]], dtype = np.float32)
+        matrix = RY.copy()
+        if n_targets > 1:
+            for _ in range(1, n_targets):
+                matrix = np.kron(matrix, RY)
         super().__init__(f"RY({np.round(theta/np.pi,2)}π)", matrix, n_qbits = 1)
 
 class RZGate(Gate):
-    def __init__(self, theta):
-        matrix = np.array([[np.exp(-1j*theta/2),0], 
-                           [0, np.exp(1j*theta/2)]], dtype = np.float32)
+    def __init__(self, theta, n_targets = 1):
+        RZ = np.array([[np.exp(-1j*theta/2),0], 
+                       [0, np.exp(1j*theta/2)]], dtype = np.complex64)
+        matrix = RZ.copy()
+        if n_targets > 1:
+            for _ in range(1, n_targets):
+                matrix = np.kron(matrix, RZ)
         super().__init__(f"RZ({np.round(theta/np.pi,2)}π)", matrix, n_qbits = 1)
 
 class MeasureGate():
